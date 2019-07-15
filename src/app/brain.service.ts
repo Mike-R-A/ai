@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 const noOfSenses = 5;
 const previousStateWeighting = 5;
-const similarityBelow = 0.1;
+const similarityBelow = 0.01;
+const howManyAnticipatedStates = 2;
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,22 @@ export class BrainService {
   inputToSenses(senseInputs: SenseInput[]) {
     this.currentSenseInputs = senseInputs;
     this.currentState = this.getUpdatedCurrentState(senseInputs, this.currentState);
-    this.anticipatedStates = this.getSimilarAssociations(this.currentState, this.shortTermMemory, similarityBelow);
-    if (this.anticipatedStates.length === 0) {
+    this.anticipatedStates = this.getXmostSimilarAssociations(
+      howManyAnticipatedStates, this.currentState, this.shortTermMemory);
+
+    const mostAnticipatedState = this.anticipatedStates[0];
+    const similarAssociations = this.getSimilarAssociations(this.currentState, this.shortTermMemory, similarityBelow);
+
+    if (similarAssociations.length === 0) {
+      console.log('nothing similar');
+
       this.shortTermMemory = [...this.shortTermMemory, this.currentState];
+    } else {
+      console.log('found similar');
+      const associationInMemory = this.shortTermMemory.filter(s => s === similarAssociations[0])[0];
+      const mergedMemory = this.getMergedAssociations(associationInMemory, this.currentState);
+      this.shortTermMemory.splice(this.shortTermMemory.indexOf(associationInMemory));
+      this.shortTermMemory = [...this.shortTermMemory, mergedMemory];
     }
   }
 
@@ -34,11 +48,14 @@ export class BrainService {
   }
 
   private getMergedAssociations(associations1: Association[], associations2: Association[]) {
-    const merged = [...associations2];
+    const merged = [] as Association[];
     for (const inputAssociation of associations1) {
-      const associationForUpdate = this.getAssociationBySenseIds(merged, inputAssociation.senseIds[0], inputAssociation.senseIds[1]);
+      const associationForUpdate = {
+        ...this.getAssociationBySenseIds(associations2, inputAssociation.senseIds[0], inputAssociation.senseIds[1])
+      };
       associationForUpdate.strength = (previousStateWeighting * associationForUpdate.strength
         + inputAssociation.strength) / (previousStateWeighting + 1);
+      merged.push(associationForUpdate);
     }
     return merged;
   }
@@ -117,6 +134,36 @@ export class BrainService {
       }
     }
 
+    return similarAssociations;
+  }
+
+  getMostSimilarAssociations(associations: Association[], associationPool: Association[][]) {
+    let mostSimilarAssociation: Association[] = null;
+    if (associationPool && associationPool.length > 0) {
+      const associationsWithSimilarity = associationPool.map(a => {
+        return {
+          associations: a,
+          similarity: this.getSimilarity(associations, a),
+        };
+      });
+      mostSimilarAssociation = associationsWithSimilarity.reduce((x, y) => {
+        return x.similarity < y.similarity ? x : y;
+      }).associations;
+    }
+    return mostSimilarAssociation;
+  }
+
+  getXmostSimilarAssociations(x: number, associations: Association[], associationPool: Association[][]) {
+    const pool = [...associationPool];
+    const similarAssociations: Association[][] = [];
+    for (let i = 0; i < x && i < pool.length; i++) {
+      let mostSimilarAssociations: Association[];
+      if (pool && pool.length > 0) {
+        mostSimilarAssociations = this.getMostSimilarAssociations(associations, pool);
+        similarAssociations.push(mostSimilarAssociations);
+      }
+      pool.splice(pool.indexOf(mostSimilarAssociations));
+    }
     return similarAssociations;
   }
 }
