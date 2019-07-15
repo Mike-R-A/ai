@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 const noOfSenses = 5;
 const previousStateWeighting = 5;
+const similarityBelow = 0.1;
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class BrainService {
   inputToSenses(senseInputs: SenseInput[]) {
     this.currentSenseInputs = senseInputs;
     this.currentState = this.getUpdatedCurrentState(senseInputs, this.currentState);
-    this.anticipatedStates = this.getSimilarAssociations(this.currentState, this.shortTermMemory);
+    this.anticipatedStates = this.getSimilarAssociations(this.currentState, this.shortTermMemory, similarityBelow);
     if (this.anticipatedStates.length === 0) {
       this.shortTermMemory = [...this.shortTermMemory, this.currentState];
     }
@@ -107,11 +108,11 @@ export class BrainService {
     return sd;
   }
 
-  getSimilarAssociations(associations: Association[], associationPool: Association[][]) {
+  getSimilarAssociations(associations: Association[], associationPool: Association[][], similaritySdValue: number) {
     let similarAssociations: Association[][] = [];
     for (const associationsForComparison of associationPool) {
       const similarity = this.getSimilarity(associations, associationsForComparison);
-      if (similarity < 0.1) {
+      if (similarity < similaritySdValue) {
         similarAssociations = [...similarAssociations, associationsForComparison];
       }
     }
