@@ -9,7 +9,7 @@ const previousStateWeighting = 5;
 export class BrainService {
   currentSenseInputs: SenseInput[] = new Array(noOfSenses);
   currentState: Association[] = [];
-  anticipatedState: Association[] = [];
+  anticipatedStates: Association[][] = [];
   shortTermMemory: Association[][] = [];
 
   constructor() {
@@ -19,20 +19,27 @@ export class BrainService {
   inputToSenses(senseInputs: SenseInput[]) {
     this.currentSenseInputs = senseInputs;
     this.currentState = this.getUpdatedCurrentState(senseInputs, this.currentState);
+    this.anticipatedStates = this.getSimilarAssociations(this.currentState, this.shortTermMemory);
+    if (this.anticipatedStates.length === 0) {
+      this.shortTermMemory = [...this.shortTermMemory, this.currentState];
+    }
   }
 
   getUpdatedCurrentState(senseInputs: SenseInput[], currentState: Association[]) {
     const currentInputAssociations = this.getAssociationsBetweenCurrentInputs(senseInputs);
-    const currentStateCopy = [...currentState];
-    for (const inputAssociation of currentInputAssociations) {
-      const associationForUpdate =
-        this.getAssociationBySenseIds(currentStateCopy, inputAssociation.senseIds[0], inputAssociation.senseIds[1]);
+    const currentStateCopy = this.getMergedAssociations(currentInputAssociations, currentState);
 
+    return this.getNormalisedAssociations(currentStateCopy);
+  }
+
+  private getMergedAssociations(associations1: Association[], associations2: Association[]) {
+    const merged = [...associations2];
+    for (const inputAssociation of associations1) {
+      const associationForUpdate = this.getAssociationBySenseIds(merged, inputAssociation.senseIds[0], inputAssociation.senseIds[1]);
       associationForUpdate.strength = (previousStateWeighting * associationForUpdate.strength
         + inputAssociation.strength) / (previousStateWeighting + 1);
     }
-
-    return this.getNormalisedAssociations(currentStateCopy);
+    return merged;
   }
 
   getAssociationsBetweenCurrentInputs(senseInputs: SenseInput[]) {
@@ -83,5 +90,32 @@ export class BrainService {
     return associations.filter(a =>
       a.senseIds.includes(id1) && a.senseIds.includes(id2)
     )[0];
+  }
+
+  getSimilarity(associations1: Association[], associations2: Association[]) {
+    const differenceSquareds: number[] = [] as number[];
+    for (const association1 of associations1) {
+      const association2 = this.getAssociationBySenseIds(associations2, association1.senseIds[0], association1.senseIds[1]);
+      const difference = association1.strength - association2.strength;
+      differenceSquareds.push(Math.pow(difference, 2));
+    }
+    const length = differenceSquareds.length;
+    const sum = differenceSquareds.reduce((x, y) => {
+      return x + y;
+    });
+    const sd = Math.sqrt(sum / length);
+    return sd;
+  }
+
+  getSimilarAssociations(associations: Association[], associationPool: Association[][]) {
+    let similarAssociations: Association[][] = [];
+    for (const associationsForComparison of associationPool) {
+      const similarity = this.getSimilarity(associations, associationsForComparison);
+      if (similarity < 0.1) {
+        similarAssociations = [...similarAssociations, associationsForComparison];
+      }
+    }
+
+    return similarAssociations;
   }
 }
