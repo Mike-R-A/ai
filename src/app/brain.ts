@@ -1,15 +1,12 @@
 export class Brain {
-  noOfSenses = 12;
-  previousStateWeighting = 5;
-  similarityBelow = 0.01;
-  howManyAnticipatedStates = 5;
   currentSenseInputs: SenseInput[] = new Array(this.noOfSenses);
   currentState: Association[] = [];
   anticipatedStates: Association[][] = [];
   anticipatedInputs: SenseInput[][];
   shortTermMemory: Association[][] = [];
 
-  constructor() {
+  constructor(private noOfSenses = 11, private previousStateWeighting = 5,
+              private similarityBelow = 0.01, private howManyAnticipatedStates = 5) {
     this.currentState = this.getEmptyAssociations(this.noOfSenses);
   }
 

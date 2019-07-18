@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Brain } from './brain';
 
 enum Senses {
-  Awake,
   Red,
   Orange,
   Yellow,
@@ -25,7 +24,7 @@ export class AppComponent implements OnInit {
   title = '';
   brain: Brain;
   constructor() {
-    this.brain = new Brain();
+    this.brain = new Brain(11, 5, 0.01, 5);
   }
 
   ngOnInit() { }
