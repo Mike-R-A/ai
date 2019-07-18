@@ -30,10 +30,6 @@ export class AppComponent implements OnInit {
   input() {
     const fox = [
       {
-        senseId: Senses.Awake,
-        value: 1
-      },
-      {
         senseId: Senses.Fox,
         value: 3
       },
@@ -88,7 +84,6 @@ export class AppComponent implements OnInit {
     this.consoleOutput('red');
     this.brain.inputToSenses(grass);
     this.consoleOutput('grass');
-    debugger;
     this.brain.inputToSenses(green);
     this.consoleOutput('green');
   }
@@ -101,6 +96,8 @@ export class AppComponent implements OnInit {
           console.log(Senses[input.senseId], input.value);
         }
       }
+
+      console.log('--------');
     }
   }
 }
