@@ -1,34 +1,33 @@
 import { Injectable } from '@angular/core';
 
-const noOfSenses = 12;
-const previousStateWeighting = 5;
-const similarityBelow = 0.01;
-const howManyAnticipatedStates = 5;
-
 @Injectable({
   providedIn: 'root'
 })
 export class BrainService {
-  currentSenseInputs: SenseInput[] = new Array(noOfSenses);
+  noOfSenses = 12;
+  previousStateWeighting = 5;
+  similarityBelow = 0.01;
+  howManyAnticipatedStates = 5;
+  currentSenseInputs: SenseInput[] = new Array(this.noOfSenses);
   currentState: Association[] = [];
   anticipatedStates: Association[][] = [];
   anticipatedInputs: SenseInput[][];
   shortTermMemory: Association[][] = [];
 
   constructor() {
-    this.currentState = this.getEmptyAssociations(noOfSenses);
+    this.currentState = this.getEmptyAssociations(this.noOfSenses);
   }
 
   inputToSenses(senseInputs: SenseInput[]) {
     this.currentSenseInputs = this.getCompleteSenseInputs(senseInputs);
     this.currentState = this.getUpdatedCurrentState(this.currentSenseInputs, this.currentState);
     this.anticipatedStates = this.getXmostSimilarAssociations(
-      howManyAnticipatedStates, this.currentState, this.shortTermMemory);
+      this.howManyAnticipatedStates, this.currentState, this.shortTermMemory);
     this.anticipatedInputs = this.anticipatedStates.map(a => {
       return this.getAnticipatedInputs(this.currentSenseInputs, a);
     });
     const mostAnticipatedState = this.anticipatedStates[0];
-    const similarAssociations = this.getSimilarAssociations(this.currentState, this.shortTermMemory, similarityBelow);
+    const similarAssociations = this.getSimilarAssociations(this.currentState, this.shortTermMemory, this.similarityBelow);
 
     if (similarAssociations.length === 0) {
       console.log('nothing similar');
@@ -46,7 +45,7 @@ export class BrainService {
 
   getCompleteSenseInputs(senseInputs: SenseInput[]): SenseInput[] {
     const completeSenseInputs = [] as SenseInput[];
-    for (let i = 0; i < noOfSenses; i++) {
+    for (let i = 0; i < this.noOfSenses; i++) {
       const input = senseInputs.filter(s => s.senseId === i)[0];
       completeSenseInputs.push({
         senseId: i,
@@ -69,15 +68,15 @@ export class BrainService {
       const associationForUpdate = {
         ...this.getAssociationBySenseIds(associations2, inputAssociation.senseIds[0], inputAssociation.senseIds[1])
       };
-      associationForUpdate.strength = (previousStateWeighting * associationForUpdate.strength
-        + inputAssociation.strength) / (previousStateWeighting + 1);
+      associationForUpdate.strength = (this.previousStateWeighting * associationForUpdate.strength
+        + inputAssociation.strength) / (this.previousStateWeighting + 1);
       merged.push(associationForUpdate);
     }
     return merged;
   }
 
   getAssociationsBetweenCurrentInputs(senseInputs: SenseInput[]) {
-    const unNormalisedAssociations = this.getEmptyAssociations(noOfSenses);
+    const unNormalisedAssociations = this.getEmptyAssociations(this.noOfSenses);
     for (let i = 0; i < senseInputs.length; i++) {
       const senseInput1 = senseInputs[i];
       const nextIndex = i + 1;
