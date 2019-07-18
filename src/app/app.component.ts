@@ -1,6 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { BrainService } from './brain.service';
 
+enum Senses {
+  Awake,
+  Red,
+  Orange,
+  Yellow,
+  Green,
+  Fox,
+  Sun,
+  Apple,
+  AnOrange,
+  Grass,
+  Pain,
+  Pleasure
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,567 +28,79 @@ export class AppComponent implements OnInit {
   ngOnInit() { }
 
   input() {
-    const senseInputs1 = [
+    const fox = [
       {
-        senseId: 0,
+        senseId: Senses.Awake,
         value: 1
       },
       {
-        senseId: 1,
-        value: 0
+        senseId: Senses.Fox,
+        value: 3
       },
       {
-        senseId: 2,
-        value: 0
-      },
-      {
-        senseId: 3,
-        value: 0
-      },
-      {
-        senseId: 4,
+        senseId: Senses.Red,
         value: 1
       }
     ] as SenseInput[];
-    const senseInputs2 = [
+    const apple = [
       {
-        senseId: 0,
+        senseId: Senses.Apple,
+        value: 3
+      },
+      {
+        senseId: Senses.Green,
         value: 1
       },
       {
-        senseId: 1,
-        value: 1
-      },
-      {
-        senseId: 2,
-        value: 0
-      },
-      {
-        senseId: 3,
-        value: 0
-      },
-      {
-        senseId: 4,
-        value: 0
-      }
-    ] as SenseInput[];
-    const senseInputs3 = [
-      {
-        senseId: 0,
-        value: 1
-      },
-      {
-        senseId: 1,
-        value: 2
-      },
-      {
-        senseId: 2,
-        value: 0
-      },
-      {
-        senseId: 3,
-        value: 0
-      },
-      {
-        senseId: 4,
+        senseId: Senses.Pleasure,
         value: 2
       }
     ] as SenseInput[];
-    const senseInputs4 = [
+    const green = [
       {
-        senseId: 0,
-        value: 1
-      },
-      {
-        senseId: 1,
-        value: 2
-      },
-      {
-        senseId: 2,
-        value: 0
-      },
-      {
-        senseId: 3,
-        value: 2
-      },
-      {
-        senseId: 4,
-        value: 2
+        senseId: Senses.Green,
+        value: 3
       }
     ] as SenseInput[];
-    const senseInputs5 = [
+    const red = [
       {
-        senseId: 0,
-        value: 1
-      },
-      {
-        senseId: 1,
-        value: 0
-      },
-      {
-        senseId: 2,
-        value: 0
-      },
-      {
-        senseId: 3,
-        value: 0
-      },
-      {
-        senseId: 4,
-        value: 1
+        senseId: Senses.Red,
+        value: 3
       }
     ] as SenseInput[];
-    const senseInputs6 = [
+    const grass = [
       {
-        senseId: 0,
-        value: 1
+        senseId: Senses.Grass,
+        value: 3
       },
       {
-        senseId: 1,
-        value: 2
+        senseId: Senses.Green,
+        value: 3
       },
-      {
-        senseId: 2,
-        value: 0
-      },
-      {
-        senseId: 3,
-        value: 2
-      },
-      {
-        senseId: 4,
-        value: 2
-      }
     ] as SenseInput[];
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs1);
-    this.brain.inputToSenses(senseInputs2);
-    this.brain.inputToSenses(senseInputs3);
-    this.brain.inputToSenses(senseInputs4);
-    this.brain.inputToSenses(senseInputs5);
-    this.brain.inputToSenses(senseInputs6);
-    this.brain.inputToSenses(senseInputs1);
-    console.log(this.brain);
+    this.brain.inputToSenses(fox);
+    this.consoleOutput('fox');
+    this.brain.inputToSenses(apple);
+    this.consoleOutput('apple');
+    this.brain.inputToSenses(green);
+    this.consoleOutput('green');
+    this.brain.inputToSenses(red);
+    this.consoleOutput('red');
+    this.brain.inputToSenses(grass);
+    this.consoleOutput('grass');
+    debugger;
+    this.brain.inputToSenses(green);
+    this.consoleOutput('green');
+  }
+
+  consoleOutput(message: string) {
+    console.log('xxxxxxxxxxxxx ', message, ' xxxxxxxxxxxxxxxxxxxxxxx');
+    for (const inputs of this.brain.anticipatedInputs) {
+      for (const input of inputs) {
+        if (input.value > 0) {
+          console.log(Senses[input.senseId], input.value);
+        }
+      }
+    }
   }
 }

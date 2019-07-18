@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-const noOfSenses = 5;
+const noOfSenses = 12;
 const previousStateWeighting = 5;
 const similarityBelow = 0.01;
 const howManyAnticipatedStates = 5;
@@ -12,6 +12,7 @@ export class BrainService {
   currentSenseInputs: SenseInput[] = new Array(noOfSenses);
   currentState: Association[] = [];
   anticipatedStates: Association[][] = [];
+  anticipatedInputs: SenseInput[][];
   shortTermMemory: Association[][] = [];
 
   constructor() {
@@ -19,11 +20,13 @@ export class BrainService {
   }
 
   inputToSenses(senseInputs: SenseInput[]) {
-    this.currentSenseInputs = senseInputs;
-    this.currentState = this.getUpdatedCurrentState(senseInputs, this.currentState);
+    this.currentSenseInputs = this.getCompleteSenseInputs(senseInputs);
+    this.currentState = this.getUpdatedCurrentState(this.currentSenseInputs, this.currentState);
     this.anticipatedStates = this.getXmostSimilarAssociations(
       howManyAnticipatedStates, this.currentState, this.shortTermMemory);
-
+    this.anticipatedInputs = this.anticipatedStates.map(a => {
+      return this.getAnticipatedInputs(this.currentSenseInputs, a);
+    });
     const mostAnticipatedState = this.anticipatedStates[0];
     const similarAssociations = this.getSimilarAssociations(this.currentState, this.shortTermMemory, similarityBelow);
 
@@ -31,18 +34,26 @@ export class BrainService {
       console.log('nothing similar');
 
       this.shortTermMemory = [...this.shortTermMemory, this.currentState];
-      console.log('add', this.shortTermMemory.length);
 
     } else {
       console.log('found similar');
       const associationInMemory = this.shortTermMemory.filter(s => s === similarAssociations[0])[0];
       const mergedMemory = this.getMergedAssociations(associationInMemory, this.currentState);
       this.shortTermMemory.splice(this.shortTermMemory.indexOf(associationInMemory), 1);
-      console.log('remove', this.shortTermMemory.length);
-
       this.shortTermMemory = [...this.shortTermMemory, mergedMemory];
-      console.log('add merged', this.shortTermMemory.length);
     }
+  }
+
+  getCompleteSenseInputs(senseInputs: SenseInput[]): SenseInput[] {
+    const completeSenseInputs = [] as SenseInput[];
+    for (let i = 0; i < noOfSenses; i++) {
+      const input = senseInputs.filter(s => s.senseId === i)[0];
+      completeSenseInputs.push({
+        senseId: i,
+        value: input ? input.value : 0
+      });
+    }
+    return completeSenseInputs;
   }
 
   getUpdatedCurrentState(senseInputs: SenseInput[], currentState: Association[]) {
@@ -87,7 +98,7 @@ export class BrainService {
     });
 
     const normalisedAssociations = unNormalisedAssociations.map(u => {
-      return { ...u, strength: u.strength / sum } as Association;
+      return { ...u, strength: sum > 0 ? u.strength / sum : 0 } as Association;
     });
 
     return normalisedAssociations;
@@ -161,10 +172,7 @@ export class BrainService {
   getXmostSimilarAssociations(x: number, associations: Association[], associationPool: Association[][]) {
     const pool = [...associationPool];
     const similarAssociations: Association[][] = [];
-    console.log(x, pool.length);
     for (let i = 0; i < x; i++) {
-      console.log(i);
-
       if (pool && pool.length > 0) {
         const mostSimilarAssociations = this.getMostSimilarAssociations(associations, pool);
         similarAssociations.push(mostSimilarAssociations);
@@ -174,5 +182,31 @@ export class BrainService {
       }
     }
     return similarAssociations;
+  }
+
+  getAnticipatedInputs(actualInputs: SenseInput[], associations: Association[]) {
+    const anticipatedInputs = [] as SenseInput[];
+    const inputs = this.getCompleteSenseInputs(actualInputs);
+    for (const input of inputs) {
+      const id = input.senseId;
+      const thisIdsAssociations = associations.filter(a => a.senseIds.includes(id));
+      const inputsStrengthsToAverage = [] as number[];
+      for (const association of thisIdsAssociations) {
+        const otherInputId = association.senseIds.filter(a => a !== id)[0];
+        const inputForAverage = association.strength *
+          inputs.filter(a => a.senseId === otherInputId)[0].value;
+        inputsStrengthsToAverage.push(inputForAverage);
+      }
+      const length = inputsStrengthsToAverage.length;
+      const sum = inputsStrengthsToAverage.reduce((x, y) => {
+        return x + y;
+      });
+      const average = sum / length;
+      anticipatedInputs.push({
+        senseId: id,
+        value: average
+      });
+    }
+    return anticipatedInputs;
   }
 }
