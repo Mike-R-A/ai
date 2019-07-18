@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrainService } from './brain.service';
 
 @NgModule({
   declarations: [
@@ -12,9 +11,6 @@ import { BrainService } from './brain.service';
   imports: [
     BrowserModule,
     AppRoutingModule
-  ],
-  providers: [
-    BrainService
   ],
   bootstrap: [AppComponent]
 })

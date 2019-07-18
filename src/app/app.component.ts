@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BrainService } from './brain.service';
+import { Brain } from './brain';
 
 enum Senses {
   Awake,
@@ -23,7 +23,10 @@ enum Senses {
 })
 export class AppComponent implements OnInit {
   title = '';
-  constructor(private brain: BrainService) { }
+  brain: Brain;
+  constructor() {
+    this.brain = new Brain();
+  }
 
   ngOnInit() { }
 
@@ -120,6 +123,9 @@ export class AppComponent implements OnInit {
     this.consoleOutput('red');
     this.brain.inputToSenses([...red, ...green, ...yellow]);
     this.consoleOutput('red, green and yellow');
+
+    console.log(this.brain);
+
   }
 
   consoleOutput(message: string) {

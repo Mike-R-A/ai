@@ -1,9 +1,4 @@
-import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class BrainService {
+export class Brain {
   noOfSenses = 12;
   previousStateWeighting = 5;
   similarityBelow = 0.01;
