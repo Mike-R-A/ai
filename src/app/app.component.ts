@@ -64,6 +64,12 @@ export class AppComponent implements OnInit {
         value: 3
       }
     ] as SenseInput[];
+    const yellow = [
+      {
+        senseId: Senses.Yellow,
+        value: 3
+      }
+    ] as SenseInput[];
     const grass = [
       {
         senseId: Senses.Grass,
@@ -74,18 +80,46 @@ export class AppComponent implements OnInit {
         value: 3
       },
     ] as SenseInput[];
-    this.brain.inputToSenses(fox);
+    const sun = [
+      {
+        senseId: Senses.Sun,
+        value: 3
+      },
+      {
+        senseId: Senses.Yellow,
+        value: 3
+      },
+    ] as SenseInput[];
+    this.brain.inputToSenses([...fox]);
     this.consoleOutput('fox');
-    this.brain.inputToSenses(apple);
+    this.brain.inputToSenses([...apple]);
     this.consoleOutput('apple');
-    this.brain.inputToSenses(green);
+    this.brain.inputToSenses([...green]);
     this.consoleOutput('green');
-    this.brain.inputToSenses(red);
+    this.brain.inputToSenses([...red]);
     this.consoleOutput('red');
-    this.brain.inputToSenses(grass);
+    this.brain.inputToSenses([...grass]);
     this.consoleOutput('grass');
-    this.brain.inputToSenses(green);
+    this.brain.inputToSenses([...green]);
     this.consoleOutput('green');
+    this.brain.inputToSenses([...sun]);
+    this.consoleOutput('sun');
+    this.brain.inputToSenses([...sun, ...grass]);
+    this.consoleOutput('sun and grass');
+    this.brain.inputToSenses([...green]);
+    this.consoleOutput('green');
+    this.brain.inputToSenses([...apple, ...sun, ...grass]);
+    this.consoleOutput('apple, sun and grass');
+    this.brain.inputToSenses([...apple]);
+    this.consoleOutput('apple');
+    this.brain.inputToSenses([...green]);
+    this.consoleOutput('green');
+    this.brain.inputToSenses([...grass]);
+    this.consoleOutput('grass');
+    this.brain.inputToSenses([...red]);
+    this.consoleOutput('red');
+    this.brain.inputToSenses([...red, ...green, ...yellow]);
+    this.consoleOutput('red, green and yellow');
   }
 
   consoleOutput(message: string) {

@@ -206,6 +206,9 @@ export class BrainService {
         value: average
       });
     }
+    anticipatedInputs.sort((x, y) => {
+      return y.value - x.value;
+    });
     return anticipatedInputs;
   }
 }
