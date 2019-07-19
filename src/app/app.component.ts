@@ -6,13 +6,10 @@ enum Senses {
   Orange,
   Yellow,
   Green,
-  Fox,
-  Sun,
-  Apple,
-  AnOrange,
-  Grass,
-  Pain,
-  Pleasure
+  Blue,
+  a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z,
+  Pleasure,
+  Pain
 }
 
 @Component({
@@ -24,15 +21,15 @@ export class AppComponent implements OnInit {
   title = '';
   brain: Brain;
   constructor() {
-    this.brain = new Brain(11, 5, 0.01, 5);
+    this.brain = new Brain(33, 5, 0.01, 5);
   }
 
   ngOnInit() { }
 
   input() {
-    const fox = [
+    const fFox = [
       {
-        senseId: Senses.Fox,
+        senseId: Senses.f,
         value: 3
       },
       {
@@ -40,9 +37,71 @@ export class AppComponent implements OnInit {
         value: 1
       }
     ] as SenseInput[];
-    const apple = [
+    const oFox = [
       {
-        senseId: Senses.Apple,
+        senseId: Senses.o,
+        value: 3
+      },
+      {
+        senseId: Senses.Red,
+        value: 1
+      }
+    ] as SenseInput[];
+    const xFox = [
+      {
+        senseId: Senses.x,
+        value: 3
+      },
+      {
+        senseId: Senses.Red,
+        value: 1
+      }
+    ] as SenseInput[];
+    const aApple = [
+      {
+        senseId: Senses.a,
+        value: 3
+      },
+      {
+        senseId: Senses.Green,
+        value: 1
+      },
+      {
+        senseId: Senses.Pleasure,
+        value: 2
+      }
+    ] as SenseInput[];
+    const pApple = [
+      {
+        senseId: Senses.p,
+        value: 3
+      },
+      {
+        senseId: Senses.Green,
+        value: 1
+      },
+      {
+        senseId: Senses.Pleasure,
+        value: 2
+      }
+    ] as SenseInput[];
+    const lApple = [
+      {
+        senseId: Senses.l,
+        value: 3
+      },
+      {
+        senseId: Senses.Green,
+        value: 1
+      },
+      {
+        senseId: Senses.Pleasure,
+        value: 2
+      }
+    ] as SenseInput[];
+    const eApple = [
+      {
+        senseId: Senses.e,
         value: 3
       },
       {
@@ -72,9 +131,9 @@ export class AppComponent implements OnInit {
         value: 3
       }
     ] as SenseInput[];
-    const grass = [
+    const gGrass = [
       {
-        senseId: Senses.Grass,
+        senseId: Senses.g,
         value: 3
       },
       {
@@ -82,46 +141,183 @@ export class AppComponent implements OnInit {
         value: 3
       },
     ] as SenseInput[];
-    const sun = [
+    const rGrass = [
       {
-        senseId: Senses.Sun,
+        senseId: Senses.r,
+        value: 3
+      },
+      {
+        senseId: Senses.Green,
+        value: 3
+      },
+    ] as SenseInput[];
+    const aGrass = [
+      {
+        senseId: Senses.a,
+        value: 3
+      },
+      {
+        senseId: Senses.Green,
+        value: 3
+      },
+    ] as SenseInput[];
+    const sGrass = [
+      {
+        senseId: Senses.s,
+        value: 3
+      },
+      {
+        senseId: Senses.Green,
+        value: 3
+      },
+    ] as SenseInput[];
+    const sSun = [
+      {
+        senseId: Senses.s,
         value: 3
       },
       {
         senseId: Senses.Yellow,
         value: 3
       },
+      {
+        senseId: Senses.Pleasure,
+        value: 2
+      },
     ] as SenseInput[];
-    this.brain.inputToSenses([...fox]);
-    this.consoleOutput('fox');
-    this.brain.inputToSenses([...apple]);
-    this.consoleOutput('apple');
+    const uSun = [
+      {
+        senseId: Senses.u,
+        value: 3
+      },
+      {
+        senseId: Senses.Yellow,
+        value: 3
+      },
+      {
+        senseId: Senses.Pleasure,
+        value: 2
+      },
+    ] as SenseInput[];
+    const nSun = [
+      {
+        senseId: Senses.n,
+        value: 3
+      },
+      {
+        senseId: Senses.Yellow,
+        value: 3
+      },
+      {
+        senseId: Senses.Pleasure,
+        value: 2
+      },
+    ] as SenseInput[];
+    const f = [
+      {
+        senseId: Senses.f,
+        value: 3
+      }
+    ] as SenseInput[];
+    const o = [
+      {
+        senseId: Senses.o,
+        value: 3
+      }
+    ] as SenseInput[];
+    const x = [
+      {
+        senseId: Senses.x,
+        value: 3
+      }
+    ] as SenseInput[];
+    const a = [
+      {
+        senseId: Senses.a,
+        value: 3
+      }
+    ] as SenseInput[];
+    const p = [
+      {
+        senseId: Senses.p,
+        value: 3
+      }
+    ] as SenseInput[];
+    const l = [
+      {
+        senseId: Senses.l,
+        value: 3
+      }
+    ] as SenseInput[];
+    const e = [
+      {
+        senseId: Senses.e,
+        value: 3
+      }
+    ] as SenseInput[];
+    const s = [
+      {
+        senseId: Senses.s,
+        value: 3
+      }
+    ] as SenseInput[];
+    const u = [
+      {
+        senseId: Senses.u,
+        value: 3
+      }
+    ] as SenseInput[];
+    const n = [
+      {
+        senseId: Senses.n,
+        value: 3
+      }
+    ] as SenseInput[];
+    this.brain.inputToSenses([...fFox]);
+    this.consoleOutput('hear f see fox');
+    this.brain.inputToSenses([...oFox]);
+    this.consoleOutput('hear o see fox');
+    this.brain.inputToSenses([...xFox]);
+    this.consoleOutput('hear x see fox');
+    this.brain.inputToSenses([...aApple]);
+    this.consoleOutput('hear a see apple');
+    this.brain.inputToSenses([...pApple]);
+    this.consoleOutput('hear p see apple');
+    this.brain.inputToSenses([...pApple]);
+    this.consoleOutput('hear p see apple');
+    this.brain.inputToSenses([...lApple]);
+    this.consoleOutput('hear l see apple');
+    this.brain.inputToSenses([...eApple]);
+    this.consoleOutput('hear e see apple');
+    this.brain.inputToSenses([...sSun]);
+    this.consoleOutput('hear s see sun');
+    this.brain.inputToSenses([...uSun]);
+    this.consoleOutput('hear u see sun');
+    this.brain.inputToSenses([...nSun]);
+    this.consoleOutput('hear n see sun');
+    this.brain.inputToSenses([...f]);
+    this.consoleOutput('f');
     this.brain.inputToSenses([...green]);
     this.consoleOutput('green');
     this.brain.inputToSenses([...red]);
     this.consoleOutput('red');
-    this.brain.inputToSenses([...grass]);
-    this.consoleOutput('grass');
-    this.brain.inputToSenses([...green]);
-    this.consoleOutput('green');
-    this.brain.inputToSenses([...sun]);
-    this.consoleOutput('sun');
-    this.brain.inputToSenses([...sun, ...grass]);
-    this.consoleOutput('sun and grass');
-    this.brain.inputToSenses([...green]);
-    this.consoleOutput('green');
-    this.brain.inputToSenses([...apple, ...sun, ...grass]);
-    this.consoleOutput('apple, sun and grass');
-    this.brain.inputToSenses([...apple]);
-    this.consoleOutput('apple');
-    this.brain.inputToSenses([...green]);
-    this.consoleOutput('green');
-    this.brain.inputToSenses([...grass]);
-    this.consoleOutput('grass');
-    this.brain.inputToSenses([...red]);
-    this.consoleOutput('red');
-    this.brain.inputToSenses([...red, ...green, ...yellow]);
-    this.consoleOutput('red, green and yellow');
+    this.brain.inputToSenses([...f]);
+    this.consoleOutput('f');
+    this.brain.inputToSenses([...p]);
+    this.consoleOutput('p');
+    this.brain.inputToSenses([...fFox]);
+    this.consoleOutput('hear f see fox');
+    this.brain.inputToSenses([...oFox]);
+    this.consoleOutput('hear o see fox');
+    this.brain.inputToSenses([...xFox]);
+    this.consoleOutput('hear x see fox');
+    this.brain.inputToSenses([...f]);
+    this.consoleOutput('f');
+    this.brain.inputToSenses([...o]);
+    this.consoleOutput('o');
+    this.brain.inputToSenses([...x]);
+    this.consoleOutput('x');
+
 
     console.log(this.brain);
 
