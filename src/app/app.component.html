@@ -1,4 +1,25 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<canvas #canvas width="300px" height="300px"></canvas>
 <button (click)="input()">Input</button>
 
+<!-- <div *ngFor="let sense in senses">
+  TEST
+</div>
+
+<table>
+  <ng-container *ngFor="let event of timeline">
+    <tr>
+      <td>Inputs</td>
+      <td *ngFor="let input of event.inputs">
+        {{input.value}}
+      </td>
+    </tr>
+    <tr *ngFor="let anticipatedInput of event.anticipatedInputs; let i = index">
+      <td>Anticipated Inputs {{i + 1}}</td>
+      <td *ngFor="let input of anticipatedInput">
+        {{input.value}}
+      </td>
+    </tr>
+    <tr>&nbsp;</tr>
+  </ng-container>
+</table> -->
 <router-outlet></router-outlet>

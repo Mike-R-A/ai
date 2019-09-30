@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Brain } from './brain';
+import { Square } from 'src/model/drawing/square';
+import { Creature } from 'src/model/creature';
 
 enum Senses {
   Red,
@@ -18,13 +20,94 @@ enum Senses {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
+  private ctx: CanvasRenderingContext2D;
+  public food: Square[] = [];
+  public creature: Creature;
   title = '';
-  brain: Brain;
+  timeline: {
+    inputs: SenseInput[],
+    anticipatedInputs: SenseInput[][]
+  }[] = [];
+
   constructor() {
-    this.brain = new Brain(33, 5, 0.01, 5);
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.creature = new Creature(new Brain(33, 5, 0.01, 5),
+      new Square(this.random(this.ctx.canvas.width), this.random(this.ctx.canvas.height), 10, 'blue', this.ctx));
+    this.drawSquares(5);
+
+    setInterval(() => {
+      this.creature.lookAround(this.getFoodScoreAbove(this.creature),
+        this.getFoodScoreRight(this.creature),
+        this.getFoodScoreBelow(this.creature),
+        this.getFoodScoreLeft(this.creature));
+    }, 1000);
+
+    // this.input();
+  }
+
+  getDistance(x1: number, y1: number, x2: number, y2: number) {
+    const xDiff = x2 - x1;
+    const yDiff = y2 - y1;
+    return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+  }
+
+  drawSquares(n: number) {
+    for (let i = 0; i < n; i++) {
+      const x = this.random(this.ctx.canvas.width);
+      const y = this.random(this.ctx.canvas.height);
+      const square = new Square(x, y, 10, 'red', this.ctx);
+      this.food.push(square);
+    }
+    console.log(this.food);
+  }
+
+  getFoodScoreAbove(creature: Creature) {
+    let count = 0;
+    for (const foodItem of this.food) {
+      if (foodItem.y >= creature.body.y) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      }
+    }
+    return count;
+  }
+
+  getFoodScoreBelow(creature: Creature) {
+    let count = 0;
+    for (const foodItem of this.food) {
+      if (foodItem.y > creature.body.y) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      }
+    }
+    return count;
+  }
+
+  getFoodScoreRight(creature: Creature) {
+    let count = 0;
+    for (const foodItem of this.food) {
+      if (foodItem.x > creature.body.x) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      }
+    }
+    return count;
+  }
+
+  getFoodScoreLeft(creature: Creature) {
+    let count = 0;
+    for (const foodItem of this.food) {
+      if (foodItem.x <= creature.body.x) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      }
+    }
+    return count;
+  }
+
+  random(max: number, min = 0) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
 
   input() {
     const fFox = [
@@ -273,59 +356,121 @@ export class AppComponent implements OnInit {
         value: 3
       }
     ] as SenseInput[];
-    this.brain.inputToSenses([...fFox]);
-    this.consoleOutput('hear f see fox');
-    this.brain.inputToSenses([...oFox]);
-    this.consoleOutput('hear o see fox');
-    this.brain.inputToSenses([...xFox]);
-    this.consoleOutput('hear x see fox');
-    this.brain.inputToSenses([...aApple]);
-    this.consoleOutput('hear a see apple');
-    this.brain.inputToSenses([...pApple]);
-    this.consoleOutput('hear p see apple');
-    this.brain.inputToSenses([...pApple]);
-    this.consoleOutput('hear p see apple');
-    this.brain.inputToSenses([...lApple]);
-    this.consoleOutput('hear l see apple');
-    this.brain.inputToSenses([...eApple]);
-    this.consoleOutput('hear e see apple');
-    this.brain.inputToSenses([...sSun]);
-    this.consoleOutput('hear s see sun');
-    this.brain.inputToSenses([...uSun]);
-    this.consoleOutput('hear u see sun');
-    this.brain.inputToSenses([...nSun]);
-    this.consoleOutput('hear n see sun');
-    this.brain.inputToSenses([...f]);
+    this.creature.brain.inputToSenses([...fFox]);
+    this.snapshot();
+    this.consoleOutput('hear f see red');
+    this.creature.brain.inputToSenses([...oFox]);
+    this.snapshot();
+    this.consoleOutput('hear o see red');
+    this.creature.brain.inputToSenses([...xFox]);
+    this.snapshot();
+    this.consoleOutput('hear x see red');
+    this.creature.brain.inputToSenses([...aApple]);
+    this.snapshot();
+    this.creature.brain.inputToSenses([...fFox]);
+    this.snapshot();
+    this.consoleOutput('hear f see red');
+    this.creature.brain.inputToSenses([...oFox]);
+    this.snapshot();
+    this.consoleOutput('hear o see red');
+    this.creature.brain.inputToSenses([...xFox]);
+    this.snapshot();
+    this.consoleOutput('hear x see red');
+    this.creature.brain.inputToSenses([...aApple]);
+    this.snapshot();
+    this.creature.brain.inputToSenses([...fFox]);
+    this.snapshot();
+    this.consoleOutput('hear f see red');
+    this.creature.brain.inputToSenses([...oFox]);
+    this.snapshot();
+    this.consoleOutput('hear o see red');
+    this.creature.brain.inputToSenses([...xFox]);
+    this.snapshot();
+    this.consoleOutput('hear x see red');
+    this.creature.brain.inputToSenses([...aApple]);
+    this.snapshot();
+    this.creature.brain.inputToSenses([...fFox]);
+    this.snapshot();
+    this.consoleOutput('hear f see red');
+    this.creature.brain.inputToSenses([...oFox]);
+    this.snapshot();
+    this.consoleOutput('hear o see red');
+    this.creature.brain.inputToSenses([...xFox]);
+    this.snapshot();
+    this.consoleOutput('hear x see red');
+    this.creature.brain.inputToSenses([...aApple]);
+    this.snapshot();
+    this.consoleOutput('hear a see green get pleasure');
+    this.creature.brain.inputToSenses([...pApple]);
+    this.snapshot();
+    this.consoleOutput('hear p see green get pleasure');
+    this.creature.brain.inputToSenses([...pApple]);
+    this.snapshot();
+    this.consoleOutput('hear p see green get pleasure');
+    this.creature.brain.inputToSenses([...lApple]);
+    this.snapshot();
+    this.consoleOutput('hear l see green get pleasure');
+    this.creature.brain.inputToSenses([...eApple]);
+    this.snapshot();
+    this.consoleOutput('hear e see green get pleasure');
+    this.creature.brain.inputToSenses([...sSun]);
+    this.snapshot();
+    this.consoleOutput('hear s see yellow get pleasure');
+    this.creature.brain.inputToSenses([...uSun]);
+    this.snapshot();
+    this.consoleOutput('hear u see yellow get pleasure');
+    this.creature.brain.inputToSenses([...nSun]);
+    this.snapshot();
+    this.consoleOutput('hear n see yellow get pleasure');
+    this.creature.brain.inputToSenses([...f]);
+    this.snapshot();
     this.consoleOutput('f');
-    this.brain.inputToSenses([...green]);
+    this.creature.brain.inputToSenses([...green]);
+    this.snapshot();
     this.consoleOutput('green');
-    this.brain.inputToSenses([...red]);
+    this.creature.brain.inputToSenses([...red]);
+    this.snapshot();
     this.consoleOutput('red');
-    this.brain.inputToSenses([...f]);
+    this.creature.brain.inputToSenses([...f]);
+    this.snapshot();
     this.consoleOutput('f');
-    this.brain.inputToSenses([...p]);
+    this.creature.brain.inputToSenses([...p]);
+    this.snapshot();
     this.consoleOutput('p');
-    this.brain.inputToSenses([...fFox]);
-    this.consoleOutput('hear f see fox');
-    this.brain.inputToSenses([...oFox]);
-    this.consoleOutput('hear o see fox');
-    this.brain.inputToSenses([...xFox]);
-    this.consoleOutput('hear x see fox');
-    this.brain.inputToSenses([...f]);
+    this.creature.brain.inputToSenses([...fFox]);
+    this.snapshot();
+    this.consoleOutput('hear f see red');
+    this.creature.brain.inputToSenses([...oFox]);
+    this.snapshot();
+    this.consoleOutput('hear o see red');
+    this.creature.brain.inputToSenses([...xFox]);
+    this.snapshot();
+    this.consoleOutput('hear x see red');
+    this.creature.brain.inputToSenses([...f]);
+    this.snapshot();
     this.consoleOutput('f');
-    this.brain.inputToSenses([...o]);
+    this.creature.brain.inputToSenses([...o]);
+    this.snapshot();
     this.consoleOutput('o');
-    this.brain.inputToSenses([...x]);
+    this.creature.brain.inputToSenses([...x]);
+    this.snapshot();
     this.consoleOutput('x');
 
 
-    console.log(this.brain);
+    console.log(this.creature.brain);
 
+  }
+
+  private snapshot() {
+    this.timeline.push({
+      inputs: [...this.creature.brain.currentSenseInputs],
+      anticipatedInputs: [...this.creature.brain.anticipatedInputs]
+    });
   }
 
   consoleOutput(message: string) {
     console.log('xxxxxxxxxxxxx ', message, ' xxxxxxxxxxxxxxxxxxxxxxx');
-    for (const inputs of this.brain.anticipatedInputs) {
+    for (const inputs of this.creature.brain.anticipatedInputs) {
       for (const input of inputs) {
         if (input.value > 0) {
           console.log(Senses[input.senseId], input.value);
