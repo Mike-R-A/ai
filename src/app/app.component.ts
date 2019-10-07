@@ -38,12 +38,11 @@ export class AppComponent implements OnInit {
         this.getFoodScoreLeft(this.creature));
       const eatingInputs = this.creature.eat(this.food);
       const movingInputs = this.creature.chooseToMove();
-      console.log(lookingAroundInputs, movingInputs, eatingInputs);
 
       const totalInputs = [...lookingAroundInputs, ...movingInputs, ...eatingInputs];
       this.creature.brain.inputToSenses(totalInputs);
-      if (this.creature.fullness > 0.01) {
-        this.creature.fullness -= 0.01;
+      if (this.creature.fullness > 0.05) {
+        this.creature.fullness -= 0.05;
       }
 
     }, 10);
