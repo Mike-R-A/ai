@@ -2,14 +2,13 @@ export class Square {
     private color = 'red';
     public x = 0;
     public y = 0;
-    private z = 30;
+    public size = 30;
 
     constructor(x: number, y: number, z: number, color: string, private ctx: CanvasRenderingContext2D) {
         this.x = x;
         this.y = y;
-        this.z = z;
+        this.size = z;
         this.color = color;
-        this.draw();
     }
 
     moveRight(distance = 1) {
@@ -32,8 +31,8 @@ export class Square {
         this.draw();
     }
 
-    private draw() {
+    draw() {
         this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(this.x, this.y, this.z, this.z);
+        this.ctx.fillRect(this.x, this.y, this.size, this.size);
     }
 }

@@ -1,5 +1,12 @@
-<canvas #canvas width="300px" height="300px"></canvas>
-<button (click)="input()">Input</button>
+<canvas #canvas width="500px" height="500px" (click)="addFood($event)"></canvas>
+<!-- <button (click)="input()">Input</button> -->
+
+<div>{{creature.fullness}}</div>
+<div>{{creature.anticipatedFullness}}</div>
+
+<!-- <div *ngFor="let association of creature.brain.currentState">
+  {{association | json}}
+</div> -->
 
 <!-- <div *ngFor="let sense in senses">
   TEST

@@ -22,17 +22,18 @@ export class Brain {
     const similarAssociations = this.getSimilarAssociations(this.currentState, this.shortTermMemory, this.similarityBelow);
 
     if (similarAssociations.length === 0) {
-      console.log('nothing similar');
+      // console.log('nothing similar');
 
       this.shortTermMemory = [...this.shortTermMemory, this.currentState];
 
     } else {
-      console.log('found similar');
+      // console.log('found similar');
       const associationInMemory = this.shortTermMemory.filter(s => s === similarAssociations[0])[0];
       const mergedMemory = this.getMergedAssociations(associationInMemory, this.currentState);
       this.shortTermMemory.splice(this.shortTermMemory.indexOf(associationInMemory), 1);
       this.shortTermMemory = [...this.shortTermMemory, mergedMemory];
     }
+
   }
 
   getCompleteSenseInputs(senseInputs: SenseInput[]): SenseInput[] {
