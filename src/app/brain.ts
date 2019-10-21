@@ -33,7 +33,14 @@ export class Brain {
       this.shortTermMemory.splice(this.shortTermMemory.indexOf(associationInMemory), 1);
       this.shortTermMemory = [...this.shortTermMemory, mergedMemory];
     }
+  }
 
+  getAnticipatedInputForInputs(inputs: SenseInput[]) {
+    const completeInputs = this.getCompleteSenseInputs(inputs);
+    const state = this.getUpdatedCurrentState(completeInputs, this.currentState);
+    const anticipatedStates = this.getXmostSimilarAssociations(
+      this.howManyAnticipatedStates, state, this.shortTermMemory);
+    return this.getAnticipatedInputs(completeInputs, anticipatedStates[0]);
   }
 
   getCompleteSenseInputs(senseInputs: SenseInput[]): SenseInput[] {
@@ -179,26 +186,29 @@ export class Brain {
   getAnticipatedInputs(actualInputs: SenseInput[], associations: Association[]) {
     const anticipatedInputs = [] as SenseInput[];
     const inputs = this.getCompleteSenseInputs(actualInputs);
-    for (const input of inputs) {
-      const id = input.senseId;
-      const thisIdsAssociations = associations.filter(a => a.senseIds.includes(id));
-      const inputsStrengthsToAverage = [] as number[];
-      for (const association of thisIdsAssociations) {
-        const otherInputId = association.senseIds.filter(a => a !== id)[0];
-        const inputForAverage = association.strength *
-          inputs.filter(a => a.senseId === otherInputId)[0].value;
-        inputsStrengthsToAverage.push(inputForAverage);
+    if (associations) {
+      for (const input of inputs) {
+        const id = input.senseId;
+        const thisIdsAssociations = associations.filter(a => a.senseIds.includes(id));
+        const inputsStrengthsToAverage = [] as number[];
+        for (const association of thisIdsAssociations) {
+          const otherInputId = association.senseIds.filter(a => a !== id)[0];
+          const inputForAverage = association.strength *
+            inputs.filter(a => a.senseId === otherInputId)[0].value;
+          inputsStrengthsToAverage.push(inputForAverage);
+        }
+        const length = inputsStrengthsToAverage.length;
+        const sum = inputsStrengthsToAverage.reduce((x, y) => {
+          return x + y;
+        });
+        const average = sum / length;
+        anticipatedInputs.push({
+          senseId: id,
+          value: average
+        });
       }
-      const length = inputsStrengthsToAverage.length;
-      const sum = inputsStrengthsToAverage.reduce((x, y) => {
-        return x + y;
-      });
-      const average = sum / length;
-      anticipatedInputs.push({
-        senseId: id,
-        value: average
-      });
     }
+
     anticipatedInputs.sort((x, y) => {
       return y.value - x.value;
     });

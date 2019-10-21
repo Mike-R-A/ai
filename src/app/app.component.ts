@@ -3,6 +3,7 @@ import { Brain } from './brain';
 import { Square } from 'src/model/drawing/square';
 import { Creature } from 'src/model/creature';
 import { Senses } from 'src/model/Senses';
+import { Food } from 'src/model/food';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,9 @@ import { Senses } from 'src/model/Senses';
 export class AppComponent implements OnInit {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
-  public food: Square[] = [];
+  public food: Food[] = [];
   public creature: Creature;
+  noOfSensesArray = [];
   title = '';
   timeline: {
     inputs: SenseInput[],
@@ -23,15 +25,50 @@ export class AppComponent implements OnInit {
   constructor() {
   }
 
+
+
+  get anticipatedStatesMap() {
+    const x = [];
+    if (this.creature.brain.anticipatedStates[0]) {
+      const no = this.noOfSensesArray.length;
+      for (let i = 0; i < no; i++) {
+        x.push([]);
+        for (let j = 0; j < no; j++) {
+          const toAdd = this.creature.brain.anticipatedStates[0].filter(a => a.senseIds[0] === i && a.senseIds[1] === j)[0];
+          if (toAdd) {
+            x[i].push(toAdd.strength);
+          } else {
+            x[i].push(-1);
+          }
+        }
+      }
+    }
+
+    return x;
+  }
+
+  setNoOfSensesArray() {
+    const x = Array(Object.values(Senses).length / 2);
+    for (let i = 0; i < x.length; i++) {
+      x[i] = i;
+    }
+    this.noOfSensesArray = x;
+  }
+
+  getSensesOfNo(x: number) {
+    return Senses[x];
+  }
+
   ngOnInit() {
+    this.setNoOfSensesArray();
     this.ctx = this.canvas.nativeElement.getContext('2d');
-    this.creature = new Creature(new Brain(Object.keys(Senses).length, 5, 0.01, 5),
+    this.creature = new Creature(new Brain(this.noOfSensesArray.length, 10, 0.01, 5),
       new Square(this.random(this.ctx.canvas.width), this.random(this.ctx.canvas.height), 10, 'blue', this.ctx));
-    this.createRandomSquares(50);
+    this.createRandomSquares(20, 1, 0, 'green');
 
     setInterval(() => {
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-      this.drawSquares(this.food);
+      this.drawSquares(this.food.map(f => f.body));
       const lookingAroundInputs = this.creature.lookAround(this.getFoodScoreAbove(this.creature),
         this.getFoodScoreRight(this.creature),
         this.getFoodScoreBelow(this.creature),
@@ -40,9 +77,12 @@ export class AppComponent implements OnInit {
       const movingInputs = this.creature.chooseToMove();
 
       const totalInputs = [...lookingAroundInputs, ...movingInputs, ...eatingInputs];
+
       this.creature.brain.inputToSenses(totalInputs);
-      if (this.creature.fullness > 0.05) {
-        this.creature.fullness -= 0.05;
+      if (this.creature.fullness > 0.1) {
+        this.creature.fullness -= 0.1;
+      } else {
+        // this.creature.damage += 0.001;
       }
 
     }, 10);
@@ -56,12 +96,13 @@ export class AppComponent implements OnInit {
     return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
   }
 
-  createRandomSquares(n: number) {
+  createRandomSquares(n: number, nutrition: number, poison: number, color: string) {
     for (let i = 0; i < n; i++) {
       const x = this.random(this.ctx.canvas.width);
       const y = this.random(this.ctx.canvas.height);
-      const square = new Square(x, y, 10, 'red', this.ctx);
-      this.food.push(square);
+      const square = new Square(x, y, 10, color, this.ctx);
+      const food = new Food(square, 1, 0);
+      this.food.push(food);
     }
   }
 
@@ -74,8 +115,8 @@ export class AppComponent implements OnInit {
   getFoodScoreAbove(creature: Creature) {
     let count = 0;
     for (const foodItem of this.food) {
-      if (foodItem.y >= creature.body.y) {
-        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      if (foodItem.body.y >= creature.body.y) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.body.x, foodItem.body.y);
       }
     }
     return count;
@@ -84,8 +125,8 @@ export class AppComponent implements OnInit {
   getFoodScoreBelow(creature: Creature) {
     let count = 0;
     for (const foodItem of this.food) {
-      if (foodItem.y < creature.body.y) {
-        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      if (foodItem.body.y < creature.body.y) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.body.x, foodItem.body.y);
       }
     }
     return count;
@@ -94,8 +135,8 @@ export class AppComponent implements OnInit {
   getFoodScoreRight(creature: Creature) {
     let count = 0;
     for (const foodItem of this.food) {
-      if (foodItem.x > creature.body.x) {
-        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      if (foodItem.body.x > creature.body.x) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.body.x, foodItem.body.y);
       }
     }
     return count;
@@ -104,8 +145,8 @@ export class AppComponent implements OnInit {
   getFoodScoreLeft(creature: Creature) {
     let count = 0;
     for (const foodItem of this.food) {
-      if (foodItem.x <= creature.body.x) {
-        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.x, foodItem.y);
+      if (foodItem.body.x <= creature.body.x) {
+        count += 1 / this.getDistance(creature.body.x, creature.body.y, foodItem.body.x, foodItem.body.y);
       }
     }
     return count;
@@ -498,7 +539,8 @@ export class AppComponent implements OnInit {
 
   addFood(event: any) {
     const position = this.getCursorPosition(event);
-    const square = new Square(position.x, position.y, 10, 'red', this.ctx);
-    this.food.push(square);
+    const square = new Square(position.x, position.y, 10, 'green', this.ctx);
+    const food = new Food(square, 1, 0);
+    this.food.push(food);
   }
 }

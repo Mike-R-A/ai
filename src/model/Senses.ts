@@ -1,4 +1,5 @@
 export enum Senses {
+    Eating,
     Left,
     Right,
     Up,
@@ -8,5 +9,6 @@ export enum Senses {
     FoodRight,
     FoodDown,
     FoodLeft,
-    Fullness
+    Fullness,
+    Damage
 }

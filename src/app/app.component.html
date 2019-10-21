@@ -1,8 +1,32 @@
-<canvas #canvas width="500px" height="500px" (click)="addFood($event)"></canvas>
+<canvas #canvas width="300px" height="300px" (click)="addFood($event)"></canvas>
 <!-- <button (click)="input()">Input</button> -->
 
-<div>{{creature.fullness}}</div>
-<div>{{creature.anticipatedFullness}}</div>
+<div>Fullness: {{creature.fullness}}</div>
+<div>Damage: {{creature.damage}}</div>
+<div>x: {{creature.body.x}}</div>
+<div>y: {{creature.body.y}}</div>
+
+<!-- {{creature.brain.anticipatedInputs | json}} -->
+<!-- {{anticipatedStatesMap | json}} -->
+
+A{{senses | json}}B
+<table *ngIf="anticipatedStatesMap && anticipatedStatesMap.length > 0">
+  <tr>
+    <td></td>
+    <td *ngFor="let header of noOfSensesArray">
+      {{ getSensesOfNo(header) }}
+    </td>
+  </tr>
+  <tr *ngFor="let senseId1 of noOfSensesArray">
+    <td>{{getSensesOfNo(senseId1)}}</td>
+    <td *ngFor="let senseId2 of noOfSensesArray">
+      <div *ngIf="anticipatedStatesMap[senseId1][senseId2] !== -1"
+        [ngStyle]="{'background-color': 'rgb(' + anticipatedStatesMap[senseId1][senseId2] * 2000 + ',0,0)'}">
+        {{ anticipatedStatesMap[senseId1][senseId2] | number:'1.5-5'}}
+      </div>
+    </td>
+  </tr>
+</table>
 
 <!-- <div *ngFor="let association of creature.brain.currentState">
   {{association | json}}
