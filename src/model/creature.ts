@@ -8,7 +8,7 @@ import { Food } from './food';
 export class Creature {
     brain: Brain;
     body: Square;
-    fullness = 0;
+    fullness = 100;
     damage = 0;
     // idealInputs: SenseInput[] = [
     //     {
@@ -25,6 +25,7 @@ export class Creature {
     }
 
     eat(potentialFood: Food[]) {
+        let result: SenseInput[] = [];
         for (const food of potentialFood) {
             const isHorizontallyOverlapping = this.body.x + this.body.size > food.body.x && this.body.x < food.body.x + food.body.size;
             const isVerticallyOverlapping = this.body.y + this.body.size > food.body.y && this.body.y < food.body.y + food.body.size;
@@ -38,9 +39,15 @@ export class Creature {
                     const index = potentialFood.indexOf(food);
                     potentialFood.splice(index, 1);
                 }
+                result = result.concat([
+                    {
+                        senseId: Senses.Eating,
+                        value: 1
+                    }
+                ]);
             }
         }
-        return [
+        result = result.concat([
             {
                 senseId: Senses.Fullness,
                 value: this.fullness
@@ -49,10 +56,14 @@ export class Creature {
                 senseId: Senses.Damage,
                 value: this.damage
             }
-        ];
+        ]);
+        console.log('result', result);
+
+        return result;
     }
 
     moveLeft() {
+        console.log('left');
         this.body.moveLeft();
         return [
             {
@@ -63,6 +74,7 @@ export class Creature {
     }
 
     moveRight() {
+        console.log('right');
         this.body.moveRight();
         return [
             {
@@ -73,6 +85,7 @@ export class Creature {
     }
 
     moveUp() {
+        console.log('up');
         this.body.moveUp();
         return [
             {
@@ -83,6 +96,7 @@ export class Creature {
     }
 
     moveDown() {
+        console.log('down');
         this.body.moveDown();
         return [
             {
@@ -93,6 +107,8 @@ export class Creature {
     }
 
     stayStill() {
+        console.log('stay');
+        this.body.stayStill();
         return [
             {
                 senseId: Senses.Stay,
@@ -225,8 +241,9 @@ export class Creature {
             score: this.getAnticipatedScore(Senses.Stay, Senses.Fullness) - this.getAnticipatedScore(Senses.Stay, Senses.Damage)
         };
 
+        console.log('up', moveUpScore, 'right', moveRightScore, 'down', moveDownScore, 'left', moveLeftScore, 'stay', stayStillScore);
 
-        const best = [moveUpScore, moveRightScore, moveDownScore, moveLeftScore, stayStillScore]
+        const best = [stayStillScore, moveUpScore, moveRightScore, moveDownScore, moveLeftScore]
             .reduce((l, e) => e.score > l.score ? e : l).key;
 
         switch (best) {

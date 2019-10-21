@@ -31,6 +31,10 @@ export class Square {
         this.draw();
     }
 
+    stayStill() {
+        this.draw();
+    }
+
     draw() {
         this.ctx.fillStyle = this.color;
         this.ctx.fillRect(this.x, this.y, this.size, this.size);

@@ -82,7 +82,7 @@ export class AppComponent implements OnInit {
       if (this.creature.fullness > 0.1) {
         this.creature.fullness -= 0.1;
       } else {
-        // this.creature.damage += 0.001;
+        this.creature.damage += 0.001;
       }
 
     }, 10);
