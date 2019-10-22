@@ -8,7 +8,7 @@ import { Food } from './food';
 export class Creature {
     brain: Brain;
     body: Square;
-    fullness = 100;
+    fullness = 10;
     damage = 0;
     // idealInputs: SenseInput[] = [
     //     {
@@ -18,10 +18,12 @@ export class Creature {
     // ];
     idealFullness = 100;
     anticipatedFullness = 0;
+    context: CanvasRenderingContext2D;
 
-    constructor(brain: Brain, body: Square) {
+    constructor(brain: Brain, body: Square, context: CanvasRenderingContext2D) {
         this.brain = brain;
         this.body = body;
+        this.context = context;
     }
 
     eat(potentialFood: Food[]) {
@@ -31,8 +33,18 @@ export class Creature {
             const isVerticallyOverlapping = this.body.y + this.body.size > food.body.y && this.body.y < food.body.y + food.body.size;
 
             if (isHorizontallyOverlapping && isVerticallyOverlapping) {
-                this.fullness += food.nutrition;
-                this.damage += food.poison;
+                if (this.damage > food.nutrition) {
+                    this.damage -= food.nutrition;
+                } else {
+                    this.damage = 0;
+                    this.fullness += food.nutrition;
+                }
+                if (this.fullness > food.poison) {
+                    this.fullness -= food.poison;
+                } else {
+                    this.fullness = 0;
+                    this.damage += food.poison;
+                }
                 if (food.body.size > 2) {
                     food.body.size--;
                 } else {
@@ -42,7 +54,7 @@ export class Creature {
                 result = result.concat([
                     {
                         senseId: Senses.Eating,
-                        value: 1
+                        value: food.nutrition
                     }
                 ]);
             }
@@ -222,19 +234,27 @@ export class Creature {
 
         const moveUpScore = {
             key: Senses.Up,
-            score: this.getAnticipatedScore(Senses.Up, Senses.Fullness) - this.getAnticipatedScore(Senses.Up, Senses.Damage)
+            score: this.body.y < this.context.canvas.height ?
+                this.getAnticipatedScore(Senses.Up, Senses.Fullness) - this.getAnticipatedScore(Senses.Up, Senses.Damage)
+                : Number.NEGATIVE_INFINITY
         };
         const moveRightScore = {
             key: Senses.Right,
-            score: this.getAnticipatedScore(Senses.Right, Senses.Fullness) - this.getAnticipatedScore(Senses.Right, Senses.Damage)
+            score: this.body.x < this.context.canvas.width ?
+                this.getAnticipatedScore(Senses.Right, Senses.Fullness) - this.getAnticipatedScore(Senses.Right, Senses.Damage)
+                : Number.NEGATIVE_INFINITY
         };
         const moveDownScore = {
             key: Senses.Down,
-            score: this.getAnticipatedScore(Senses.Down, Senses.Fullness) - this.getAnticipatedScore(Senses.Down, Senses.Damage)
+            score: this.body.y > 0 ?
+                this.getAnticipatedScore(Senses.Down, Senses.Fullness) - this.getAnticipatedScore(Senses.Down, Senses.Damage)
+                : Number.NEGATIVE_INFINITY
         };
         const moveLeftScore = {
             key: Senses.Left,
-            score: this.getAnticipatedScore(Senses.Left, Senses.Fullness) - this.getAnticipatedScore(Senses.Left, Senses.Damage)
+            score: this.body.x > 0 ?
+                this.getAnticipatedScore(Senses.Left, Senses.Fullness) - this.getAnticipatedScore(Senses.Left, Senses.Damage)
+                : Number.NEGATIVE_INFINITY
         };
         const stayStillScore = {
             key: Senses.Stay,
@@ -243,8 +263,16 @@ export class Creature {
 
         console.log('up', moveUpScore, 'right', moveRightScore, 'down', moveDownScore, 'left', moveLeftScore, 'stay', stayStillScore);
 
-        const best = [stayStillScore, moveUpScore, moveRightScore, moveDownScore, moveLeftScore]
-            .reduce((l, e) => e.score > l.score ? e : l).key;
+        const arrayForCalc = [stayStillScore, moveUpScore, moveRightScore, moveDownScore, moveLeftScore];
+
+        const best = arrayForCalc.reduce((e, l) => e.score > l.score ? e : l).key;
+
+        console.log('best is: ', best);
+
+
+        if (arrayForCalc.every(x => x === arrayForCalc[0])) {
+            return this.moveRandomly();
+        }
 
         switch (best) {
             case Senses.Up: {

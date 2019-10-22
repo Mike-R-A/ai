@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   private ctx: CanvasRenderingContext2D;
   public food: Food[] = [];
   public creature: Creature;
+  interval = 1;
   noOfSensesArray = [];
   title = '';
   timeline: {
@@ -62,8 +63,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.setNoOfSensesArray();
     this.ctx = this.canvas.nativeElement.getContext('2d');
-    this.creature = new Creature(new Brain(this.noOfSensesArray.length, 10, 0.01, 5),
-      new Square(this.random(this.ctx.canvas.width), this.random(this.ctx.canvas.height), 10, 'blue', this.ctx));
+    this.creature = new Creature(new Brain(this.noOfSensesArray.length, 1000, 0.01, 5),
+      new Square(this.random(this.ctx.canvas.width), this.random(this.ctx.canvas.height), 10, 'blue', this.ctx), this.ctx);
     this.createRandomSquares(20, 1, 0, 'green');
 
     setInterval(() => {
@@ -80,12 +81,19 @@ export class AppComponent implements OnInit {
 
       this.creature.brain.inputToSenses(totalInputs);
       if (this.creature.fullness > 0.1) {
+        this.creature.damage = 0;
         this.creature.fullness -= 0.1;
       } else {
+        this.creature.fullness = 0;
         this.creature.damage += 0.001;
       }
+      const randomNumber = this.random(1000, 0);
 
-    }, 10);
+      if (randomNumber === 50) {
+        this.createRandomSquares(1);
+      }
+
+    }, this.interval);
 
     // this.input();
   }
@@ -96,12 +104,12 @@ export class AppComponent implements OnInit {
     return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
   }
 
-  createRandomSquares(n: number, nutrition: number, poison: number, color: string) {
+  createRandomSquares(n: number, nutrition = 1, poison = 0, color = 'green') {
     for (let i = 0; i < n; i++) {
       const x = this.random(this.ctx.canvas.width);
       const y = this.random(this.ctx.canvas.height);
       const square = new Square(x, y, 10, color, this.ctx);
-      const food = new Food(square, 1, 0);
+      const food = new Food(square, nutrition, poison);
       this.food.push(food);
     }
   }
